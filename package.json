@@ -22,6 +22,7 @@
         "build": "tsc",
         "scenario1": "tsc; node build/scenario1.js",
         "scenario2": "tsc; node build/scenario2.js",
+        "scenario3": "tsc; node build/scenario3.js",
         "aq-test": "tsc; node build/asyncqueue-test.js",
         "asyncqueue": "tsc; node build/asyncqueue.js"
     }

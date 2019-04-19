@@ -22,7 +22,7 @@ function scenario2() {
         s1.pull(queue);
         s2.pull(queue);
         s3.pull(queue);
-        p1.push(queue, 'message');
+        p1.push(queue, 'message1');
         p1.push(queue, 'message2');
         p1.push(queue, 'message3');
     });

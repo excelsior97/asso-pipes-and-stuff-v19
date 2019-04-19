@@ -11,18 +11,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const queue_1 = require("./queue");
 const publisher_1 = require("./publisher");
 const subscriber_1 = require("./subscriber");
-function scenario1() {
+const ventilator_1 = require("./ventilator");
+function scenario3() {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log("Scenario 1");
         let queue = new queue_1.UnboundedQueue();
         let p1 = new publisher_1.Publisher();
-        let s1 = new subscriber_1.Subscriber('subscriber1');
-        s1.pull(queue);
+        let v1 = new ventilator_1.Ventilator("ventilator");
+        let s1 = new subscriber_1.SubscriberObs('subscriber1');
+        let s2 = new subscriber_1.SubscriberObs('subscriber2');
+        let s3 = new subscriber_1.SubscriberObs('subscriber3');
+        s1.subscribe(v1);
+        s2.subscribe(v1);
+        s3.subscribe(v1);
+        v1.pull(queue);
+        v1.pull(queue);
+        v1.pull(queue);
         p1.push(queue, 'message1');
         p1.push(queue, 'message2');
         p1.push(queue, 'message3');
-        s1.pull(queue);
     });
 }
-scenario1();
-//# sourceMappingURL=scenario1.js.map
+scenario3();
+//# sourceMappingURL=scenario3.js.map

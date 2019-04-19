@@ -8,32 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-class SubscriberObs {
+class Ventilator {
     constructor(name) {
         this.name = name;
-    }
-    notify(message) {
-        console.log(this.name + " : " + message);
-    }
-    subscribe(ventilator) {
-        ventilator.subscribers.push(this);
+        this.subscribers = new Array();
     }
     pull(queue) {
         return __awaiter(this, void 0, void 0, function* () {
-            queue.dequeue().then(res => console.log(this.name + " " + res));
+            queue.dequeue().then(res => {
+                console.log(this.name + " : " + res);
+                this.subscribers.forEach(observer => observer.notify(res));
+            });
         });
     }
 }
-exports.SubscriberObs = SubscriberObs;
-class Subscriber {
-    constructor(name) {
-        this.name = name;
-    }
-    pull(queue) {
-        return __awaiter(this, void 0, void 0, function* () {
-            queue.dequeue().then(res => console.log(this.name + " " + res));
-        });
-    }
-}
-exports.Subscriber = Subscriber;
-//# sourceMappingURL=subscriber.js.map
+exports.Ventilator = Ventilator;
+//# sourceMappingURL=ventilator.js.map
