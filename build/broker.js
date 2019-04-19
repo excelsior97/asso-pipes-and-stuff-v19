@@ -8,28 +8,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const queue_1 = require("./queue");
-class Publisher {
-    push(queue, arg) {
-        return __awaiter(this, void 0, void 0, function* () {
-            queue.enqueue(arg);
-        });
+class Registry {
+    constructor() {
+        this.publishers = new Array();
+        this.subscribers = new Array();
     }
 }
-exports.Publisher = Publisher;
-class PublisherBroker {
-    constructor(name) {
+exports.Registry = Registry;
+class Broker {
+    constructor(name, registry) {
         this.name = name;
-        this.queue = new queue_1.UnboundedQueue();
+        this.registry = registry;
     }
-    register(registry) {
-        registry.publishers.push(this);
+    push(message) {
+        this.registry.subscribers.forEach(subscriber => subscriber.queue.enqueue(message));
     }
-    push(arg) {
+    pull(publisher) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.queue.enqueue(arg);
+            publisher.queue.dequeue().then(res => {
+                console.log(this.name + " : " + res);
+                this.registry.subscribers.forEach(subscriber => subscriber.notify());
+                this.push(res);
+            });
         });
     }
 }
-exports.PublisherBroker = PublisherBroker;
-//# sourceMappingURL=publisher.js.map
+exports.Broker = Broker;
+//# sourceMappingURL=broker.js.map

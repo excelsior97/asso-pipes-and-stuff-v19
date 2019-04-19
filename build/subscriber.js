@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const queue_1 = require("./queue");
 class SubscriberObs {
     constructor(name) {
         this.name = name;
@@ -20,7 +21,7 @@ class SubscriberObs {
     }
     pull(queue) {
         return __awaiter(this, void 0, void 0, function* () {
-            queue.dequeue().then(res => console.log(this.name + " " + res));
+            queue.dequeue().then(res => console.log(this.name + " received : " + res));
         });
     }
 }
@@ -31,9 +32,27 @@ class Subscriber {
     }
     pull(queue) {
         return __awaiter(this, void 0, void 0, function* () {
-            queue.dequeue().then(res => console.log(this.name + " " + res));
+            queue.dequeue().then(res => console.log(this.name + " received : " + res));
         });
     }
 }
 exports.Subscriber = Subscriber;
+class SubscriberObsBroker {
+    constructor(name) {
+        this.name = name;
+        this.queue = new queue_1.UnboundedQueue();
+    }
+    notify() {
+        this.pull();
+    }
+    subscribe(registry) {
+        registry.subscribers.push(this);
+    }
+    pull() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.queue.dequeue().then(res => console.log(this.name + " received : " + res));
+        });
+    }
+}
+exports.SubscriberObsBroker = SubscriberObsBroker;
 //# sourceMappingURL=subscriber.js.map

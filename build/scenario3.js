@@ -16,16 +16,16 @@ function scenario3() {
     return __awaiter(this, void 0, void 0, function* () {
         let queue = new queue_1.UnboundedQueue();
         let p1 = new publisher_1.Publisher();
-        let v1 = new ventilator_1.Ventilator("ventilator");
+        let ventilator = new ventilator_1.Ventilator("ventilator");
         let s1 = new subscriber_1.SubscriberObs('subscriber1');
         let s2 = new subscriber_1.SubscriberObs('subscriber2');
         let s3 = new subscriber_1.SubscriberObs('subscriber3');
-        s1.subscribe(v1);
-        s2.subscribe(v1);
-        s3.subscribe(v1);
-        v1.pull(queue);
-        v1.pull(queue);
-        v1.pull(queue);
+        s1.subscribe(ventilator);
+        s2.subscribe(ventilator);
+        s3.subscribe(ventilator);
+        ventilator.pull(queue);
+        ventilator.pull(queue);
+        ventilator.pull(queue);
         p1.push(queue, 'message1');
         p1.push(queue, 'message2');
         p1.push(queue, 'message3');
